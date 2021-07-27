@@ -1,1 +1,40 @@
-test
+---
+- name: add user and permission 
+  hosts: all
+
+  tasks:
+
+    - name: add user/permissions
+      ansible.builtin.user:
+        name: mhimes
+        group: wheel
+        password: "{{ user_password  }}"
+      become: yes
+
+    - name: configure sshd_config
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication no$' 
+        line: PasswordAuthentication yes 
+      become: yes
+
+    - name: restart sshd 
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
+      become: yes
+
+    - name: configure sudo without auth
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        regexp: '^#.*NOPASSWD: ALL$'
+        line: '%wheel        ALL=(ALL)       NOPASSWD: ALL'
+      become: yes 
+
+    - name: configure subscriptions
+      community.general.redhat_subscription:
+        state: present
+        username: "{{ subscription_user }}"
+        password: "{{ subscription_pw }}"
+        auto_attach: true
+      become: yes
