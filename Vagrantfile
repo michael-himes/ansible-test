@@ -1,13 +1,13 @@
 if Dir.glob("*.gz")
   TAR_FILE = Dir.glob("*.gz")[0] 
-  TAR = File.basename("#{TAR_FILE}", ".tar.gz") 
+  TAR_DIR = File.basename("#{TAR_FILE}", ".tar.gz") 
 end
 
 
 $script = <<-SCRIPT
 
 tar xf #{TAR_FILE} 
-mv -f inventory #{TAR}
+mv -f inventory #{TAR_DIR}
 
 SCRIPT
 
@@ -20,8 +20,8 @@ Vagrant.configure("2") do |config|
     tower.vm.provision "file", :source => "#{TAR_FILE}", :destination => "/home/vagrant/"
     if File.exist?("inventory")
       tower.vm.provision "file", :source => "inventory", :destination => "/home/vagrant/"
+      tower.vm.provision "shell", inline: $script
     end
-    tower.vm.provision "shell", inline: $script
     tower.vm.provider :libvirt do |libvirt|
       libvirt.memory = 2048
       libvirt.cpus = 2
