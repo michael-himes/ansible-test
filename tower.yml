@@ -1,0 +1,65 @@
+---
+- name: add user and permission 
+  hosts: all
+
+  tasks:
+    - name: configure sshd_config
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication no$' 
+        line: PasswordAuthentication yes 
+      become: yes
+
+    - name: restart sshd 
+      ansible.builtin.service:
+        name: sshd
+        state: restarted
+      become: yes
+
+    - name: configure subscriptions
+      community.general.redhat_subscription:
+        state: present
+        username: "{{ redhat_subscription_username }}"
+        password: "{{ redhat_subscription_password }}"
+        auto_attach: true
+      become: yes
+
+    - name: get date
+      ansible.builtin.shell: date +%Y-%m-%d 
+      register: today
+
+    - name: collect relavant pool id
+      ansible.builtin.shell:
+        cmd: subscription-manager list --available --all --matches=Ansible* --pool --ondate="{{ today.stdout }}" | head -n 1
+      register: pool_id
+      become: yes 
+
+    - name: register "{{ pool_id.stdout }}"
+      community.general.redhat_subscription:
+        state: present
+        username: "{{ redhat_subscription_username }}"
+        password: "{{ redhat_subscription_password }}"
+
+        pool_ids: "{{ pool_id.stdout }}"
+      become: yes
+
+    - name: record gzip filename
+      ansible.builtin.shell:
+        cmd: ls | grep *.tar.gz
+      register: gzip_name
+      become: yes 
+  
+    - name: Extract "{{ gzip_name.stdout }}"
+      ansible.builtin.unarchive:
+        src: "{{ gzip_name.stdout }}"
+        dest: /home/vagrant/
+        remote_src: yes
+  
+    - name: Change permissions of extracted file
+      ansible.builtin.file:
+        path: /home/vagrant
+        state: directory
+        recurse: yes
+        owner: vagrant
+        group: vagrant
+  
