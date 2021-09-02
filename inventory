@@ -1,13 +1,35 @@
 [tower]
-10.0.15.101
+localhost ansible_connection=local
 
-[db]
+[database]
 10.0.15.102
 
-[auto]
+[automationhub]
 10.0.15.103
 
 [test] 
 10.0.15.104
 
+[all:vars]
+ansible_connection=ssh
+ansible_ssh_pass='vagrant'
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
+ansible_user=vagrant
+
+admin_password=vagrant
+ansible_become=true
+
+pg_host=10.0.15.102
+pg_database=awx
+pg_username=awx
+pg_password='vagrant'
+pg_port='5432'
+
+
+automationhub_admin_password='automationhub'
+automationhub_pg_host='10.0.15.103'
+automationhub_pg_port='5432'
+automationhub_pg_database='automationhub'
+automationhub_pg_username='automationhub'
+automationhub_pg_password='vagrant'
