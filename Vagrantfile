@@ -1,3 +1,19 @@
+def redhat_subscription_auth
+  puts "Redhat Subscription Username:"
+  username = STDIN.gets.chomp
+  puts "Redhat Subscription Password:"
+  password = STDIN.noecho(&:gets).chomp
+  return [ username, password ]
+end
+
+if ENV['SUB_USERNAME' && 'SUB_PASSWORD'].nil? 
+  puts "Please consider setting environment variables SUB_USERNAME' and 'SUB_PASSWORD' to avoid multiple credentail prompts.\n Example: \n\t export SUB_USERNAME=username \n\t export SUB_PASSWORD=password \n"
+  username, password = redhat_subscription_auth()
+else 
+  username = ENV['SUB_USERNAME']
+  password = ENV['SUB_PASSWORD']
+end
+
 if Dir.glob("*.gz").any?
   tar_file = Dir.glob("*.gz")[0] 
   tar_dir = File.basename("#{tar_file}", ".tar.gz") 
@@ -11,10 +27,6 @@ if Dir.glob("*.gz").any?
   SCRIPT
 end
 
-puts "Redhat Subscription Username:"
-username = STDIN.gets.chomp
-puts "Redhat Subscription Password:"
-password = STDIN.noecho(&:gets).chomp
 
 Vagrant.configure("2") do |config|
 
