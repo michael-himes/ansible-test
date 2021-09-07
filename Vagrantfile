@@ -18,13 +18,6 @@ if Dir.glob("*.gz").any?
   tar_file = Dir.glob("*.gz")[0] 
   tar_dir = File.basename("#{tar_file}", ".tar.gz") 
   task_file = "/home/vagrant/#{tar_dir}/roles/preflight/tasks/main.yml"
-  tag_ram_check = 'sed -i ' + %q('/RAM.$/a\  tags: ram') + " #{task_file}"
-  tag_password_check = 'sed -i ' + %q('/Passwords must be defined/a\      tags: ram') + " #{task_file}"
-
-  $tower_script = <<-SCRIPT
-    #{tag_ram_check}
-    #{tag_password_check}
-  SCRIPT
 end
 
 
@@ -36,14 +29,13 @@ Vagrant.configure("2") do |config|
     if defined?(tar_file)
       tower.vm.provision "file", :source => "#{tar_file}", :destination => "/home/vagrant/"
       tower.vm.provision "ansible" do |ansible|
-        ansible.verbose = "v"
+        ansible.verbose = "vvvv"
         ansible.playbook = "tower.yml"
         ansible.extra_vars = {
           "redhat_subscription_username": "#{username}",
           "redhat_subscription_password": "#{password}"
         }
       end
-      tower.vm.provision "shell", inline: $tower_script
       if File.exist?("inventory")
         tower.vm.provision "file", :source => "inventory", :destination => "/home/vagrant/"
         tower.vm.provision "shell", inline: "mv -f inventory #{tar_dir}"
@@ -91,5 +83,14 @@ Vagrant.configure("2") do |config|
       libvirt.memory = 2048
       libvirt.cpus = 2
     end
+  end
+
+  config.vm.provision "ansible" do |all|
+    all.verbose = "v"
+    all.playbook = "all.yml"
+    all.extra_vars = {
+      "redhat_subscription_username": "#{username}",
+      "redhat_subscription_password": "#{password}"
+    }
   end
 end

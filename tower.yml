@@ -63,3 +63,16 @@
         owner: vagrant
         group: vagrant
   
+    - name: Tag RAM check for skipping
+      ansible.builtin.lineinfile:
+        path: "/home/vagrant/{{ gzip_name.stdout | regex_replace('.tar.gz') }}/roles/preflight/tasks/main.yml"
+        insertafter: "RAM.$"
+        line: "  tags: ram"
+        state: present 
+
+    - name: Tag password preflight check for skipping
+      ansible.builtin.lineinfile:
+        path: "/home/vagrant/{{ gzip_name.stdout | regex_replace('.tar.gz') }}/roles/preflight/tasks/main.yml"
+        insertafter: "Passwords must be defined"
+        line: "      tags: ram"
+        state: present 
