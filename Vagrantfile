@@ -1,17 +1,9 @@
-def redhat_subscription_auth
-  puts "Redhat Subscription Username:"
-  username = STDIN.gets.chomp
-  puts "Redhat Subscription Password:"
-  password = STDIN.noecho(&:gets).chomp
-  return [ username, password ]
-end
-
 if ENV['SUB_USERNAME' && 'SUB_PASSWORD'].nil? 
-  puts "Please consider setting environment variables SUB_USERNAME' and 'SUB_PASSWORD' to avoid multiple credentail prompts.\n Example: \n\t export SUB_USERNAME=username \n\t export SUB_PASSWORD=password \n"
-  username, password = redhat_subscription_auth()
-else 
-  username = ENV['SUB_USERNAME']
-  password = ENV['SUB_PASSWORD']
+  puts "Please set the following:"
+  puts "export SUB_USERNAME=\nexport SUB_PASSWORD="
+  exit 1 
+else
+  username, password = ENV['SUB_USERNAME'], ENV['SUB_PASSWORD'] 
 end
 
 if Dir.glob("*.gz").any?
@@ -25,7 +17,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :tower do |tower|
     tower.vm.box = "generic/rhel8"
-    tower.vm.network :private_network, ip: "10.0.15.101"
+    tower.vm.network :private_network, ip: "172.16.0.101"
     if defined?(tar_file)
       tower.vm.provision "file", :source => "#{tar_file}", :destination => "/home/vagrant/"
       tower.vm.provision "ansible" do |ansible|
@@ -51,7 +43,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :db do |db|
     db.vm.box = "generic/rhel8"
-    db.vm.network :private_network, ip: "10.0.15.102"
+    db.vm.network :private_network, ip: "172.16.0.102"
     db.vm.provider :libvirt do |libvirt|
       libvirt.memory = 2048
       libvirt.cpus = 2
@@ -60,7 +52,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :auto do |auto|
     auto.vm.box = "generic/rhel8"
-    auto.vm.network :private_network, ip: "10.0.15.103"
+    auto.vm.network :private_network, ip: "172.16.0.103"
     auto.vm.provision "ansible" do |ansible|
       ansible.verbose = "v"
       ansible.playbook = "auto.yml"
@@ -78,7 +70,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :test do |test|
     test.vm.box = "generic/rhel8"
-    test.vm.network :private_network, ip: "10.0.15.104"
+    test.vm.network :private_network, ip: "172.16.0.104"
     test.vm.provider :libvirt do |libvirt|
       libvirt.memory = 2048
       libvirt.cpus = 2

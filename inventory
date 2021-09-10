@@ -2,13 +2,13 @@
 localhost ansible_connection=local
 
 [database]
-10.0.15.102
+172.16.0.102
 
 [automationhub]
-10.0.15.103
+172.16.0.103
 
 [test] 
-10.0.15.104
+172.16.0.104
 
 [all:vars]
 ansible_connection=ssh
@@ -20,7 +20,7 @@ ansible_user=vagrant
 admin_password=vagrant
 ansible_become=true
 
-pg_host=10.0.15.102
+pg_host=172.16.0.102
 pg_database=awx
 pg_username=awx
 pg_password='vagrant'
@@ -28,7 +28,7 @@ pg_port='5432'
 
 
 automationhub_admin_password='automationhub'
-automationhub_pg_host='10.0.15.103'
+automationhub_pg_host='172.16.0.103'
 automationhub_pg_port='5432'
 automationhub_pg_database='automationhub'
 automationhub_pg_username='automationhub'
