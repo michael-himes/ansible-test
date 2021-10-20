@@ -1,0 +1,12 @@
+- name: configure sshd_config
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication no$' 
+    line: PasswordAuthentication yes 
+  become: yes
+
+- name: restart sshd 
+  ansible.builtin.service:
+    name: sshd
+    state: restarted
+  become: yes

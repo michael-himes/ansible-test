@@ -1,0 +1,36 @@
+---
+- name: Configure ssh
+  hosts: all
+  gather_facts: no
+  roles: 
+    - configure_ssh
+
+- name: Attach Ansible subscription
+  hosts: tower 
+  gather_facts: no
+  roles: 
+    - { role: attach_subscription, subscription_search: 'Ansible*'}
+
+  tasks:
+    - name: Untar setup file
+      unarchive: 
+        src: "./{{ ansible_tower_tar }}"
+        dest: /home/vagrant/
+        owner: vagrant
+        group: vagrant
+        mode: 0744
+      become: yes
+
+    - name: Copy inventory file
+      copy:
+        src: ./inventory
+        dest: "/home/vagrant/{{ ansible_tower_directory }}/inventory"
+        owner: vagrant
+        group: vagrant
+        mode: 0644
+
+- name: Attach Automationhub subscription
+  hosts: automationhub
+  gather_facts: no
+  roles: 
+    - { role: attach_subscription, subscription_search: 'Automation*'}
