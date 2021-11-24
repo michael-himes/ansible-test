@@ -4,3 +4,6 @@
     - name: print message
       debug:
         msg: Hello World
+    - name: stall
+      pause:
+        seconds: 30

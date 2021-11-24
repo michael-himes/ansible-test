@@ -1,5 +1,6 @@
 [tower]
-localhost ansible_connection=local
+172.16.0.101 ansible_connection=local
+172.16.0.104 ansible_connection=ssh
 
 [database]
 172.16.0.102
@@ -7,18 +8,15 @@ localhost ansible_connection=local
 [automationhub]
 172.16.0.103
 
-[test] 
-172.16.0.104
-
 [all:vars]
 ansible_connection=ssh
-#ansible_ssh_pass='vagrant'
+ansible_ssh_pass='vagrant'
 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-ansible_ssh_private_key_file='/home/vagrant/.ssh/id_rsa'
+#ansible_ssh_private_key_file='/home/vagrant/.ssh/id_rsa'
 
 ansible_user=vagrant
 
-admin_password=vagrant
+admin_password='vagrant'
 ansible_become=true
 
 pg_host=172.16.0.102
@@ -26,11 +24,14 @@ pg_database=awx
 pg_username=awx
 pg_password='vagrant'
 pg_port='5432'
+pg_sslmode='prefer'
 
 
-automationhub_admin_password='automationhub'
+automationhub_admin_password='vagrant'
 automationhub_pg_host='172.16.0.102'
 automationhub_pg_port='5432'
 automationhub_pg_database='automationhub'
 automationhub_pg_username='automationhub'
 automationhub_pg_password='vagrant'
+automationhub_pg_sslmode='prefer'
+required_ram=1

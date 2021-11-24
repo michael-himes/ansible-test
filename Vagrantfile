@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
           "test" => ["test"]
         }
       end
-      tower.vm.provision "shell", inline: "cd #{tar_dir}; sudo ./setup.sh -e ignore_preflight_errors=True"
+      tower.vm.provision "shell", inline: "cd #{tar_dir}; sudo ./setup.sh"
     end
     tower.vm.provider :libvirt do |libvirt|
       libvirt.memory = 2048
