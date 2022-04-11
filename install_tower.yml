@@ -34,4 +34,3 @@
   gather_facts: no
   roles: 
     - { role: attach_subscription, subscription_search: 'Automation*'}
-### did update? 
