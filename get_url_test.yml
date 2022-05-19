@@ -3,7 +3,7 @@
   tasks:
     - name: Download CSAR Package
       get_url:
-        url: "https://ubuntu.com/download/desktop/thank-you?version\=22.04&architecture=amd64"
+        url: https://speed.hetzner.de/1GB.bin
         headers:
           Accept-Encoding: gzip, deflate, br
           #Authorization: Bearer {{ market.json.access_token }}
