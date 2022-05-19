@@ -1,0 +1,18 @@
+---
+- name: test
+  hosts: test
+  gather_facts: no
+  become: true
+
+  tasks:
+          # - name: install lvm2 binaries
+          #   command: '/usr/bin/yum install -y lvm2'
+          #   retries: 10
+          #   delay: 2
+          #   async: 60
+          #   poll: 5
+
+    - name: try the yum module
+      yum:
+        name: lvm2
+        state: absent
