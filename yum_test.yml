@@ -1,6 +1,6 @@
 ---
 - name: test
-  hosts: test
+  hosts: ec2-35-161-131-63.us-west-2.compute.amazonaws.com
   gather_facts: no
   become: true
 
