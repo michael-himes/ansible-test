@@ -1,0 +1,16 @@
+---
+- hosts: ec2-35-161-131-63.us-west-2.compute.amazonaws.com
+  tasks:
+    - name: Download CSAR Package
+      get_url:
+        url: "https://ubuntu.com/download/desktop/thank-you?version\=22.04&architecture=amd64"
+        headers:
+          Accept-Encoding: gzip, deflate, br
+          #Authorization: Bearer {{ market.json.access_token }}
+        dest: '/home/vagrant'
+        validate_certs: no
+        timeout: 1800
+      delegate_to: localhost
+      retries: 10
+      delay: 10
+      register: csar_download_result
