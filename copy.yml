@@ -1,6 +1,6 @@
 ---
 - name: Copy Test
-  hosts: srh-lw-ldm.sr.nws.noaa.gov
+  hosts: all
 
   tasks:
 
