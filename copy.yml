@@ -1,0 +1,11 @@
+---
+- name: Copy Test
+  hosts: srh-lw-ldm.sr.nws.noaa.gov
+
+  tasks:
+
+   - name: Copy CopyTest File to Tmp
+     copy:
+       src: /tmp/test/a/copy/text/test.txt
+       dest: /tmp
+...
