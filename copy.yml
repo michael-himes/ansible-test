@@ -8,5 +8,4 @@
      copy:
        src: /tmp/test/a/copy/text/test.txt
        dest: /tmp
-       remote_src: yes
 ...
