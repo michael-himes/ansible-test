@@ -2,5 +2,5 @@
 collections:
 - community.general
 - ansible.posix
-- kubernetes.core
+- kubernetes.core:2.3.1
 ...
