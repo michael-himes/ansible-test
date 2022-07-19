@@ -17,4 +17,4 @@
             enabled: true
           persistentStorage:
             enabled: true
-            storageClassName: "{{ pxbkupsc }}"
+            storageClassName: test
