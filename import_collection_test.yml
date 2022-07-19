@@ -1,0 +1,12 @@
+---
+- name: kube test
+  hosts: tower1
+
+  tasks:
+    - name: test
+      kubernetes.core.helm:
+        name: test
+        chart_ref: stable/prometheus
+        release_namespace: monitoring
+        create_namespace: true
+
