@@ -10,5 +10,4 @@
     - name: echo variable
       debug:
         msg: echo "{{ variable| default("default_value") }}" 
-
-
+      timeout: 2
