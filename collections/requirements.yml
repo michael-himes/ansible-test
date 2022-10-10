@@ -2,8 +2,4 @@
 collections:
 - community.general
 - ansible.posix
-- kubernetes.core
-
-- name: kubernetes.core
-  version: 2.3.1
 ...
