@@ -1,0 +1,13 @@
+- hosts:
+  - "{{targets | default('all')}}"
+  any_errors_fatal: true
+  become: no
+  gather_facts: no
+  tasks:
+  - name: Testing
+    shell: echo "Hello World"
+    register: results
+
+  - name: Print output
+    debug:
+      msg: "{{results.stdout}}"
