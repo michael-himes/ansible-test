@@ -1,0 +1,12 @@
+---
+- name: test
+  connection: local
+  hosts: all
+  tasks:
+  - name: Reboot server
+    dellemc.openmanage.redfish_powerstate:
+      baseuri: 192.168.1.100
+      username: "root"
+      password: "fake"
+      reset_type: "ForceOff"
+      validate_certs: false
